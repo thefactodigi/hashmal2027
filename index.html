@@ -89,6 +89,7 @@ ul.clean li .sub{color:var(--muted);font-weight:400}
 .pill.g{border-color:rgba(0,153,216,.5);color:var(--green);background:var(--green-dim)}
 .pill.b{border-color:rgba(204,220,64,.4);color:var(--blue);background:var(--blue-dim)}
 .quote{border-right:3px solid var(--green);padding:6px 20px 6px 0;font-size:clamp(17px,1.8vw,22px);font-weight:600;line-height:1.65;color:var(--text)}
+.quote.big{border:none;padding:0;margin:0 auto;max-width:980px;font-size:clamp(24px,3vw,40px);font-weight:700;line-height:1.5;text-wrap:balance}
 .statement{font-size:clamp(19px,2vw,25px);font-weight:700;line-height:1.6}
 .footer-note{margin-top:22px;font-size:13px;color:var(--muted)}
 .arrowheads{display:flex;align-items:center;gap:6px;font-size:clamp(22px,2.4vw,30px);font-weight:900;line-height:1}
@@ -261,10 +262,11 @@ ul.clean li .sub{color:var(--muted);font-weight:400}
 
 <!-- 6 · המסקנה -->
 <section class="slide" data-section="המסקנה" data-tag="תוצאות 2026">
-  <div class="inner">
-    <div class="eyebrow rise"><span class="tick"></span>תוצאות · מה זה אומר</div>
-    <h2 class="rise d1" style="margin-bottom:22px"><span class="hl">המסקנה</span></h2>
-    <p class="quote rise d2" style="font-size:clamp(19px,2.2vw,28px);max-width:960px">תוכן <span class="hl">וידאו</span> עם אנשים אמיתיים מהסניפים מביא יותר לידים, בעלות נמוכה בהרבה. ב-2027 נבנה את הפעילות סביב זה: יותר סרטונים, יותר פנים מהצוות, <span style="color:var(--blue);text-decoration:underline;text-decoration-color:var(--green);text-underline-offset:7px;text-decoration-thickness:3px">ויותר מועמדים קרוב לסניף</span>.</p>
+  <div class="inner" style="text-align:center">
+    <div class="eyebrow rise" style="justify-content:center;display:flex"><span class="tick"></span>תוצאות · מה זה אומר</div>
+    <h2 class="rise d1" style="margin:0 auto 34px;font-size:clamp(38px,4.6vw,60px)"><span class="hl">המסקנה</span></h2>
+    <p class="quote big rise d2">תוכן <span class="hl">וידאו</span> עם אנשים אמיתיים מהסניפים מביא יותר לידים, בעלות נמוכה בהרבה.</p>
+    <p class="quote big rise d3" style="margin-top:28px">ב-2027 נבנה את הפעילות סביב זה: יותר סרטונים, יותר פנים מהצוות, <span style="color:var(--blue);text-decoration:underline;text-decoration-color:var(--green);text-underline-offset:9px;text-decoration-thickness:3px">ויותר מועמדים קרוב לסניף</span>.</p>
   </div>
 </section>
 
@@ -373,7 +375,34 @@ ul.clean li .sub{color:var(--muted);font-weight:400}
   </div>
 </section>
 
-<!-- 13 · תודה -->
+<!-- 13 · יעדים ל-2027 -->
+<section class="slide" data-section="יעדים ל-2027" data-tag="יעדים">
+  <div class="inner" style="text-align:center">
+    <div class="eyebrow rise" style="justify-content:center;display:flex"><span class="tick"></span>יעדים ל-2027</div>
+    <h2 class="rise d1" style="margin:0 auto 10px;font-size:clamp(34px,4.2vw,54px)">היעד ל-2027: <span class="hl">יותר מועמדים</span>, בפחות כסף</h2>
+    <p class="lead rise d1" style="margin:0 auto 30px;color:var(--text);font-weight:600;font-size:clamp(17px,1.8vw,22px)">שלושה מספרים שנמדוד לפיהם את השנה.</p>
+    <div class="cardrow rise d2" style="grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:0 auto">
+      <div class="card kpi" style="padding:34px 20px;border-color:rgba(255,203,4,.5);background:linear-gradient(180deg,rgba(255,203,4,.10),rgba(14,36,64,.55))">
+        <div class="lbl" style="margin:0 0 12px;font-weight:700;color:var(--text);font-size:15px">עלות לליד</div>
+        <div class="num" style="font-size:clamp(44px,5vw,68px);color:var(--pink)"><span class="count" data-to="4">0</span> <span class="u" style="color:var(--pink)">₪</span></div>
+        <div class="sub" style="font-size:14px;margin-top:12px">מ-6.40 ₪ ב-2026 · ירידה של 37%</div>
+      </div>
+      <div class="card kpi" style="padding:34px 20px;border-color:rgba(0,153,216,.45)">
+        <div class="lbl" style="margin:0 0 12px;font-weight:700;color:var(--text);font-size:15px">כמות לידים</div>
+        <div class="num" style="font-size:clamp(34px,3.6vw,48px);color:var(--green)">להשלים</div>
+        <div class="sub" style="font-size:14px;margin-top:12px;color:var(--muted)">יעד שנתי · לפי תוכנית הגיוס של הסניפים</div>
+      </div>
+      <div class="card kpi" style="padding:34px 20px;border-color:rgba(204,220,64,.45)">
+        <div class="lbl" style="margin:0 0 12px;font-weight:700;color:var(--text);font-size:15px">כמות גיוסים</div>
+        <div class="num" style="font-size:clamp(34px,3.6vw,48px);color:var(--blue)">להשלים</div>
+        <div class="sub" style="font-size:14px;margin-top:12px;color:var(--muted)">יעד שנתי · מועמדים שנקלטו בפועל</div>
+      </div>
+    </div>
+    <p class="statement rise d3" style="margin-top:32px;max-width:900px;margin-inline:auto">הדרך לשם כבר הוכחה בשטח: <span class="hl">וידאו מהסניפים</span> הוריד את העלות לליד עד 1.20 ₪ · ב-2027 הופכים את זה לשיטה.</p>
+  </div>
+</section>
+
+<!-- 14 · תודה -->
 <section class="slide" data-section="תודה">
   <div class="inner" style="text-align:center">
     <h1 class="rise" style="margin-bottom:18px">תודה <span style="color:var(--green)">שהקשבתם</span></h1>
@@ -384,7 +413,7 @@ ul.clean li .sub{color:var(--muted);font-weight:400}
 </div>
 
 <div class="bottombar">
-  <div class="counter"><b id="cur">1</b> / <span id="total">13</span></div>
+  <div class="counter"><b id="cur">1</b> / <span id="total">14</span></div>
   <div class="hint">ניווט: חצים במקלדת · רווח לשקף הבא</div>
   <div class="navbtns">
     <button class="navbtn" id="prevBtn" aria-label="שקף קודם">›</button>

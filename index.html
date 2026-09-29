@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>חשמל ישיר · תוכנית 2027</title>
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Layout: full-screen slide deck, RTL, dark navy stage (LOOM 2027 format) with חשמל ישיר brand accents: sky blue + lime */
+/* Brand: Yashir Blue #0099D8 · Yashir Green #CCDC40 · Yashir Yellow #FFCB04 · Yashir Purple #4A3D98 */
+:root{color-scheme:dark;--bg:#071527;--bg2:#0B1F3A;--card:#0E2440;--card2:#122C4E;--line:rgba(160,195,235,.14);--text:#EAF3FD;--muted:#8FA6C2;--green:#1FA9E6;--green-dim:rgba(0,153,216,.18);--blue:#CCDC40;--blue-dim:rgba(204,220,64,.14);--pink:#FFCB04;--brand:#0099D8;--purple:#4A3D98}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+html{direction:rtl}
+body{font-family:'Heebo',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;margin:0;font-size:16px}
+.backdrop{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(1200px 800px at 85% -10%, rgba(0,153,216,.09), transparent 60%),radial-gradient(1000px 700px at 10% 110%, rgba(204,220,64,.07), transparent 60%),var(--bg)}
+.backdrop .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(140,180,230,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(140,180,230,.045) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(80% 70% at 50% 40%,#000 30%,transparent 100%);-webkit-mask-image:radial-gradient(80% 70% at 50% 40%,#000 30%,transparent 100%)}
+.bolt{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center}
+.bolt svg{width:44px;height:64px;overflow:visible;filter:drop-shadow(0 0 10px rgba(0,153,216,.75)) drop-shadow(0 0 22px rgba(255,203,4,.35));animation:flicker 4.2s ease-in-out infinite}
+.bolt .fill{fill:var(--pink);opacity:0;animation:boltfill 4.2s ease-in-out infinite}
+.bolt .stroke{fill:none;stroke:var(--green);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:180;stroke-dashoffset:180;animation:draw 4.2s ease-in-out infinite}
+.bolt .ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--green);opacity:0;animation:ping 4.2s ease-out infinite}
+.bolt .ring.r2{animation-delay:.35s;border-color:var(--pink)}
+@keyframes draw{0%{stroke-dashoffset:180;opacity:.9}28%{stroke-dashoffset:0;opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes boltfill{0%,24%{opacity:0}30%{opacity:1}34%{opacity:.35}38%{opacity:1}42%{opacity:.6}46%,70%{opacity:1}100%{opacity:0}}
+@keyframes flicker{0%,28%{transform:scale(1)}30%{transform:scale(1.08)}33%{transform:scale(.98)}36%{transform:scale(1.04)}40%,100%{transform:scale(1)}}
+@keyframes ping{0%,28%{transform:scale(.5);opacity:0}30%{transform:scale(.5);opacity:.8}75%{transform:scale(2.6);opacity:0}100%{transform:scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.bolt svg,.bolt .fill,.bolt .stroke,.bolt .ring{animation:none}.bolt .fill{opacity:1}.bolt .stroke{stroke-dashoffset:0}.bolt .ring{opacity:.25;transform:scale(1.6)}}
+.topbar{position:fixed;top:0;right:0;left:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:calc(18px + env(safe-area-inset-top,0px)) 34px 18px;pointer-events:none}
+.brand{display:flex;align-items:center;gap:10px}
+.deckname{display:none}
+.progress{position:fixed;top:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--green));z-index:60;transition:width .45s cubic-bezier(.4,0,.2,1);border-radius:0 0 0 3px}
+.bottombar{position:fixed;bottom:0;right:0;left:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 34px calc(16px + env(safe-area-inset-bottom,0px))}
+.counter{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.counter b{color:var(--text);font-weight:700}
+.navbtns{display:flex;gap:10px}
+.navbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(14,36,64,.7);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(6px);font-family:inherit}
+.navbtn:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+.navbtn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.hint{font-size:11.5px;color:var(--muted);opacity:.7}
+.stage{position:relative;z-index:1;height:100%;width:100%}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:96px 72px 90px;opacity:0;visibility:hidden;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease,visibility .5s}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0)}
+.inner{width:100%;max-width:1120px;min-width:0}
+.slide.active .rise{animation:rise .6s cubic-bezier(.2,.7,.3,1) both}
+.slide.active .rise.d1{animation-delay:.08s}.slide.active .rise.d2{animation-delay:.16s}
+.slide.active .rise.d3{animation-delay:.24s}.slide.active .rise.d4{animation-delay:.32s}
+.slide.active .rise.d5{animation-delay:.4s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.slide{transition:opacity .3s}.slide.active .rise{animation:none}}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--green);margin-bottom:18px}
+.eyebrow.blue{color:var(--blue)}
+.eyebrow .tick{width:22px;height:2px;background:currentColor;border-radius:2px}
+h1{font-size:clamp(40px,5.4vw,68px);font-weight:900;line-height:1.12;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:clamp(30px,3.6vw,44px);font-weight:800;line-height:1.18;margin-bottom:26px;text-wrap:balance}
+h2 .hl,.hl{color:var(--green)}
+h2 .hlb,.hlb{color:var(--blue)}
+.lead{font-size:clamp(16px,1.6vw,20px);color:var(--muted);font-weight:400;line-height:1.75;max-width:820px}
+.lead b,.lead strong{color:var(--text);font-weight:600}
+.cardrow{display:grid;gap:16px}
+.card{background:linear-gradient(180deg,var(--card),rgba(14,36,64,.55));border:1px solid var(--line);border-radius:16px;padding:24px 26px;min-width:0}
+.card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.card p{font-size:14.5px;color:var(--muted);line-height:1.7}
+.card p b{color:var(--text);font-weight:600}
+.kpi{text-align:center;padding:28px 18px}
+.kpi .num{font-size:clamp(30px,3.4vw,46px);font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .num .u{font-size:.55em;font-weight:700;color:var(--green)}
+.kpi .lbl{font-size:13.5px;color:var(--muted);margin-top:8px;font-weight:500}
+.kpi .sub{font-size:12px;color:var(--green);margin-top:6px;font-weight:600}
+ul.clean{list-style:none;display:grid;gap:14px}
+ul.clean li{display:flex;gap:14px;align-items:flex-start;font-size:16.5px;line-height:1.65;color:var(--text)}
+ul.clean li .mk{flex:none;margin-top:2px;font-weight:900;color:var(--green);font-size:18px}
+ul.clean.blue li .mk{color:var(--blue)}
+ul.clean li span b{font-weight:700}
+ul.clean li .sub{color:var(--muted);font-weight:400}
+.tablewrap{overflow-x:auto}
+.table{width:100%;border-collapse:separate;border-spacing:0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.table th{background:var(--card2);font-weight:700;text-align:right;padding:13px 18px;font-size:13.5px;color:var(--text);border-bottom:1px solid var(--line);letter-spacing:.02em}
+.table td{padding:13px 18px;border-bottom:1px solid rgba(160,195,235,.08);color:var(--muted);line-height:1.55;vertical-align:top}
+.table tr:last-child td{border-bottom:none}
+.table td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+.table .g{color:var(--green);font-weight:700}
+.table .b{color:var(--blue);font-weight:700}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-size:13.5px;font-weight:600;border:1px solid var(--line);background:rgba(14,36,64,.6);color:var(--text)}
+.pill.g{border-color:rgba(0,153,216,.5);color:var(--green);background:var(--green-dim)}
+.pill.b{border-color:rgba(204,220,64,.4);color:var(--blue);background:var(--blue-dim)}
+.quote{border-right:3px solid var(--green);padding:6px 20px 6px 0;font-size:clamp(17px,1.8vw,22px);font-weight:600;line-height:1.65;color:var(--text)}
+.statement{font-size:clamp(19px,2vw,25px);font-weight:700;line-height:1.6}
+.footer-note{margin-top:22px;font-size:13px;color:var(--muted)}
+.arrowheads{display:flex;align-items:center;gap:6px;font-size:clamp(22px,2.4vw,30px);font-weight:900;line-height:1}
+.arrowheads .a1{color:var(--green)}
+.arrowheads .a2{color:var(--blue)}
+.mini{font-size:12.5px;color:var(--muted);letter-spacing:.1em;font-weight:600}
+.money{color:var(--pink);font-weight:900}
+.img{border-radius:12px;border:1px solid var(--line);width:100%;height:auto;display:block;object-fit:cover;max-width:100%}
+.tile{height:clamp(140px,30vh,270px)}
+.tall{height:clamp(160px,38vh,340px);object-position:50% 20%}
+.ep{height:clamp(120px,25vh,230px);object-position:50% 20%}
+.wide{max-height:52vh}
+.img.shadow{box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.stat{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid rgba(160,195,235,.08)}
+.stat:last-child{border-bottom:none}
+.stat .k{font-size:13.5px;color:var(--muted);font-weight:500}
+.stat .v{font-size:20px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums}
+.stat .v.g{color:var(--green)}
+.flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.flow .step{background:linear-gradient(180deg,var(--card),rgba(14,36,64,.55));border:1px solid var(--line);border-radius:14px;padding:16px 22px;text-align:center;min-width:150px}
+.flow .step .t{font-size:clamp(18px,2vw,24px);font-weight:900;line-height:1.1}
+.flow .step .s{font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:600}
+.flow .arr{font-size:26px;font-weight:900;color:var(--green)}
+.slide[data-tag]::after{content:attr(data-tag);position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:48px;background:var(--green-dim);border:1px solid rgba(0,153,216,.6);color:var(--green);font-weight:800;font-size:12.5px;padding:6px 16px;border-radius:999px;z-index:30;letter-spacing:.02em}
+/* video result cards · phone mockups, full 9:16 frame, no cropping */
+.vid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vid{padding:16px 16px;display:flex;align-items:center;gap:16px;min-width:0}
+.phone{flex:none;height:clamp(200px,38vh,360px);aspect-ratio:9/16;border-radius:18px;background:#000;padding:5px;border:1px solid rgba(160,195,235,.25);box-shadow:0 14px 34px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.06);position:relative}
+.phone img{width:100%;height:100%;object-fit:cover;border-radius:13px;display:block}
+.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:34%;height:6px;border-radius:999px;background:#000;z-index:2;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+.phone .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}
+.phone .play i{width:38px;height:38px;border-radius:50%;background:rgba(7,21,39,.55);border:1.5px solid rgba(255,255,255,.7);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center}
+.phone .play i::after{content:"";border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent #fff;margin-right:-3px}
+.vid .body{flex:1;min-width:0;text-align:right}
+.vid .n{font-size:clamp(26px,3vw,40px);font-weight:900;line-height:1.05;font-variant-numeric:tabular-nums}
+.vid .n small{display:block;font-size:.4em;font-weight:700;color:var(--muted);margin-top:4px;letter-spacing:.04em}
+.vid .c{font-size:13.5px;color:var(--muted);margin-top:12px;font-weight:600;padding-top:10px;border-top:1px solid rgba(160,195,235,.1)}
+.vid .c b{display:block;color:var(--pink);font-weight:900;font-size:clamp(20px,2vw,26px);font-variant-numeric:tabular-nums}
+.vid .ttl{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px;line-height:1.4}
+.vid.top{border-color:rgba(0,153,216,.55);background:linear-gradient(180deg,rgba(0,153,216,.14),rgba(14,36,64,.55))}
+.vid.top .phone{border-color:rgba(0,153,216,.6);box-shadow:0 0 0 2px rgba(0,153,216,.35),0 14px 34px rgba(0,0,0,.5),0 0 40px rgba(0,153,216,.25)}
+.vid.top .n{color:var(--green)}
+.rank{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:800;background:var(--green-dim);color:var(--green);border:1px solid rgba(0,153,216,.5);margin-bottom:10px;white-space:nowrap}
+.placeholder{color:var(--muted);opacity:.7}
+@media (max-width:860px){
+  .slide{padding:76px 18px 84px;align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .inner{padding-bottom:12px}
+  .split{grid-template-columns:1fr!important}
+  h1{font-size:34px} h2{font-size:26px;margin-bottom:18px}
+  .lead{font-size:15px;line-height:1.7}
+  .cardrow{grid-template-columns:1fr!important;gap:12px}
+  .card{padding:18px 18px} .card h3{font-size:15.5px} .card p{font-size:13.5px}
+  .kpi{padding:16px 12px!important} .kpi .num{font-size:26px!important} .kpi .lbl{font-size:12px}
+  ul.clean{gap:10px} ul.clean li{font-size:14.5px;line-height:1.6}
+  .table{font-size:12px} .table th,.table td{padding:8px 10px;white-space:normal}
+  .statement{font-size:16.5px} .quote{font-size:15.5px;padding:4px 14px 4px 0}
+  .eyebrow{font-size:11.5px;margin-bottom:12px}
+  .topbar{padding-left:16px;padding-right:16px} .brand img{height:34px!important}
+  .bottombar{padding-left:16px;padding-right:16px;background:linear-gradient(0deg,rgba(7,21,39,.92),transparent)}
+  .navbtn{width:40px;height:40px} .counter{font-size:12px} .hint{display:none}
+  .pill{font-size:12px;padding:6px 11px} .arrowheads{font-size:20px} .footer-note{font-size:12px}
+  .five{grid-template-columns:repeat(3,1fr)!important} .four{grid-template-columns:1fr 1fr!important} .tile,.tall,.ep{height:auto;aspect-ratio:3/4}
+  .vid-grid{grid-template-columns:1fr} .phone{height:220px}
+  .slide[data-tag]::after{left:14px;font-size:10.5px;padding:5px 12px}
+}
+</style>
+</head>
+<body>
+
+<div class="backdrop"><div class="grid"></div></div>
+<div class="progress" id="progress"></div>
+<div class="topbar">
+  <div class="brand"><img src="img/logo.png" alt="חשמל ישיר · רשת שיווק לציוד חשמל" style="height:46px;width:auto;display:block"></div>
+  <div class="deckname" id="sectionLabel">פתיחה</div>
+</div>
+
+<div class="stage" id="stage">
+
+<!-- 1 · שער -->
+<section class="slide active" data-section="פתיחה">
+  <div class="inner" style="text-align:center">
+    <div class="rise" style="display:flex;justify-content:center;margin-bottom:34px">
+      <div class="bolt" aria-hidden="true"><span class="ring"></span><span class="ring r2"></span>
+        <svg viewBox="0 0 44 64"><path class="fill" d="M26 2 6 36h14l-4 26 22-36H24l2-24z"/><path class="stroke" d="M26 2 6 36h14l-4 26 22-36H24l2-24z"/></svg>
+      </div>
+    </div>
+    <div class="mini rise d1">חשמל ישיר · תוכנית גיוס דיגיטלי שנתית לאישור הנהלה · 2027</div>
+    <h1 class="rise d2" style="margin:18px auto 22px;max-width:900px">תוכנית 2027:<br><span style="color:var(--green)">מגייסים בהילוך גבוה</span></h1>
+    <div class="rise d3 arrowheads" style="justify-content:center;margin-bottom:20px">
+      <span class="a1">‹‹</span><span style="font-size:.6em;color:var(--muted);font-weight:600;margin:0 10px">שני אפיקי פעילות · מטרה אחת: יותר מועמדים, בעלות נמוכה יותר</span><span class="a2">››</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · שער פרק -->
+<section class="slide" data-section="פתיחה">
+  <div class="inner" style="text-align:center">
+    <div class="eyebrow rise" style="justify-content:center;display:flex"><span class="tick"></span>פתיחה</div>
+    <h1 class="rise d1" style="margin:10px auto 18px;max-width:980px">לפני שמדברים על 2027:<br><span style="color:var(--green)">מה עשינו ב-2026</span></h1>
+  </div>
+</section>
+
+<!-- 3 · נתונים כלליים -->
+<section class="slide" data-section="תוצאות · נתונים כלליים" data-tag="תוצאות 2026">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>תוצאות · נתונים כלליים</div>
+    <h2 class="rise d1" style="margin-bottom:16px">נוכחות שמגייסת: <span class="hl">המספרים</span></h2>
+    <div class="split rise d2" style="margin-bottom:14px">
+      <div class="card" style="padding:18px 22px">
+        <h3 style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span class="pill b" style="padding:4px 12px;font-size:12px">חשיפה ותנועה</span></h3>
+        <div class="stat"><span class="k">חשיפות (Impressions)</span><span class="v"><span class="count" data-to="1.02" data-dec="2">0</span>M</span></div>
+        <div class="stat"><span class="k">חשיפה ייחודית (Reach)</span><span class="v"><span class="count" data-to="120.3" data-dec="1">0</span>K</span></div>
+        <div class="stat"><span class="k">לחיצות על קישור (Link Clicks)</span><span class="v g"><span class="count" data-to="18539" data-sep="1">0</span></span></div>
+      </div>
+      <div class="card" style="padding:18px 22px">
+        <h3 style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span class="pill b" style="padding:4px 12px;font-size:12px">לידים ותקציב</span></h3>
+        <div class="stat"><span class="k">סה״כ לידים</span><span class="v g"><span class="count" data-to="1112" data-sep="1">0</span></span></div>
+        <div class="stat"><span class="k">עלות ממוצעת לליד</span><span class="v"><span class="count" data-to="6.40" data-dec="2">0</span> ₪</span></div>
+        <div class="stat"><span class="k">סה״כ תקציב מדיה</span><span class="v"><span class="count" data-to="45430" data-sep="1">0</span> ₪</span></div>
+      </div>
+    </div>
+    <div class="eyebrow rise d3" style="margin-bottom:10px;font-size:12px">שורה תחתונה</div>
+    <div class="cardrow rise d3" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card kpi" style="padding:14px 12px;border-color:rgba(0,153,216,.45)"><div class="num" style="font-size:30px;color:var(--green)"><span class="count" data-to="1112" data-sep="1">0</span></div><div class="lbl">לידים בשנת 2026</div></div>
+      <div class="card kpi" style="padding:14px 12px"><div class="num" style="font-size:30px"><span class="count" data-to="6.40" data-dec="2">0</span><span class="u">₪</span></div><div class="lbl">עלות ממוצעת לליד</div></div>
+      <div class="card kpi" style="padding:14px 12px;border-color:rgba(204,220,64,.35)"><div class="num" style="font-size:30px;color:var(--blue)">להשלים</div><div class="lbl">כמות גיוסים</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · המודעות המובילות -->
+<section class="slide" data-section="תוצאות · המודעות המובילות" data-tag="תוצאות 2026">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>תוצאות · מה עבד</div>
+    <h2 class="rise d1" style="margin-bottom:12px">המודעות שהביאו <span class="hl">הכי הרבה לידים</span> ב-2026</h2>
+    <p class="lead rise d1" style="margin-bottom:20px">חמש המודעות המובילות של השנה: שילוב של פנים אמיתיות מהצוות, מסר ישיר למועמד ופירוט ברור של מה כולל התפקיד.</p>
+    <div class="cardrow five rise d2" style="grid-template-columns:repeat(5,1fr);gap:10px">
+      <img class="img ep" src="img/ad-1.jpg" alt="בוא/י להיות חלק מהמשפחה המובילה בענף החשמל בישראל" style="height:clamp(180px,42vh,380px);object-position:50% 0">
+      <img class="img ep" src="img/ad-2.jpg" alt="דרוש/ה מחסנאי/ת עם ראש גדול" style="height:clamp(180px,42vh,380px);object-position:50% 0">
+      <img class="img ep" src="img/ad-3.jpg" alt="מאחורי כל ארגון מצליח עומד בק-אופיס מושלם" style="height:clamp(180px,42vh,380px);object-position:50% 0">
+      <img class="img ep" src="img/ad-4.jpg" alt="אם הכביש הוא הבית השני שלכם" style="height:clamp(180px,42vh,380px);object-position:50% 0">
+      <img class="img ep" src="img/ad-5.jpg" alt="נהג/ת עם רישיון ג'? חשמל ישיר מחפשת אותך" style="height:clamp(180px,42vh,380px);object-position:50% 0">
+    </div>
+  </div>
+</section>
+
+<!-- 5 · הסרטונים -->
+<section class="slide" data-section="תוצאות · הסרטונים" data-tag="תוצאות 2026">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>תוצאות · מהסטטי לוידאו</div>
+    <h2 class="rise d1" style="margin-bottom:10px">מאז עליית הסרטונים במאי: <span class="money">העלות לליד ירדה משמעותית</span></h2>
+    <p class="lead rise d1" style="margin:0 0 20px;color:var(--text);font-weight:600">המשמעות: כמות לידים גדולה יותר, בעלות נמוכה יותר.</p>
+    <div class="vid-grid rise d2" style="margin-bottom:18px">
+      <div class="card vid top">
+        <div class="phone"><img src="img/vid-2.jpg" alt="סרטון: נהג/נהגת חלוקה?"><span class="play"><i></i></span></div>
+        <div class="body"><span class="rank">הסרטון המוביל</span><div class="n"><span class="count" data-to="696">0</span><small>לידים</small></div><div class="c"><b>1.20 ₪</b>לליד</div><div class="ttl">״נהג/נהגת חלוקה?״ · רכב חלוקה על הכביש</div></div>
+      </div>
+      <div class="card vid">
+        <div class="phone"><img src="img/vid-3.jpg" alt="סרטון: עובד מחסן עם מוצר"><span class="play"><i></i></span></div>
+        <div class="body"><div class="n"><span class="count" data-to="440">0</span><small>לידים</small></div><div class="c"><b>5.54 ₪</b>לליד</div><div class="ttl">במחסן · עובד במשמרת</div></div>
+      </div>
+      <div class="card vid">
+        <div class="phone"><img src="img/vid-1.jpg" alt="סרטון: פתק על מסך במוקד"><span class="play"><i></i></span></div>
+        <div class="body"><div class="n"><span class="count" data-to="221">0</span><small>לידים</small></div><div class="c"><b>11.73 ₪</b>לליד</div><div class="ttl">״לקוחות מרוצים״ · מאחורי הדלפק בסניף</div></div>
+      </div>
+    </div>
+    <p class="statement rise d3">שלושה סרטונים = <span class="hl">1,357 לידים</span> · הסרטון המוביל הביא ליד ב-1.20 ₪ בלבד.</p>
+  </div>
+</section>
+
+<!-- 6 · המסקנה -->
+<section class="slide" data-section="המסקנה" data-tag="תוצאות 2026">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>תוצאות · מה זה אומר</div>
+    <h2 class="rise d1" style="margin-bottom:22px"><span class="hl">המסקנה</span></h2>
+    <p class="quote rise d2" style="font-size:clamp(19px,2.2vw,28px);max-width:960px">תוכן <span class="hl">וידאו</span> עם אנשים אמיתיים מהסניפים מביא יותר לידים, בעלות נמוכה בהרבה. ב-2027 נבנה את הפעילות סביב זה: יותר סרטונים, יותר פנים מהצוות, <span style="color:var(--blue);text-decoration:underline;text-decoration-color:var(--green);text-underline-offset:7px;text-decoration-thickness:3px">ויותר מועמדים קרוב לסניף</span>.</p>
+  </div>
+</section>
+
+<!-- 7 · שער מעבר -->
+<section class="slide" data-section="התוכנית">
+  <div class="inner" style="text-align:center">
+    <div class="eyebrow rise" style="justify-content:center;display:flex"><span class="tick"></span>מהנתונים אל התוכנית</div>
+    <h1 class="rise d1" style="margin:10px auto 22px;max-width:980px">איך ממשיכים לגייס<br><span style="color:var(--green)">ב-2027?</span></h1>
+    <div class="rise d3 arrowheads" style="justify-content:center">
+      <span class="a1">‹‹</span><span style="font-size:.6em;color:var(--muted);font-weight:600;margin:0 10px">התשובה: 2 אפיקי פעילות · ממומן ואורגני</span><span class="a2">››</span>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · 2 אפיקים -->
+<section class="slide" data-section="התוכנית · 2 אפיקים" data-tag="התוכנית ל-2027">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>התוכנית</div>
+    <h2 class="rise d1" style="margin-bottom:10px">התוכנית ל-2027: <span class="hl">2 אפיקי פעילות</span> · ממומן ואורגני</h2>
+    <div class="rise d1" style="font-size:clamp(17px,1.8vw,22px);font-weight:600;color:var(--muted);margin-bottom:18px">מנוע ממומן שכבר הוכיח את עצמו, ומנוע אורגני חדש שמביא את המשרה אל השכונה של המועמד.</div>
+    <div class="cardrow rise d2" style="grid-template-columns:repeat(2,1fr);gap:18px">
+      <div class="card" style="border-color:rgba(0,153,216,.45);padding:28px 30px"><span class="pill g">אפיק 01 · ממומן</span><h3 style="margin:14px 0 8px;font-size:21px">קמפיינים במטא</h3><p style="font-size:16px">מודעות סטטיות וסרטונים בפייסבוק ובאינסטגרם, מוזנים מיום צילום רבעוני. הבסיס שמייצר את רוב הלידים.</p></div>
+      <div class="card" style="border-color:rgba(204,220,64,.35);padding:28px 30px"><span class="pill b">אפיק 02 · אורגני</span><h3 style="margin:14px 0 8px;font-size:21px">גיוס מקומי דרך קהילות בפייסבוק</h3><p style="font-size:16px">הפצה ממוקדת בקבוצות דרושים, קבוצות יישוביות ולוחות קהילתיים באזורי הסניפים המגייסים.</p></div>
+    </div>
+    <p class="statement rise d3" style="margin-top:22px"><span class="hl">‹</span><span class="hlb">‹</span> שני האפיקים יורים לאותה מטרה: יותר מועמדים מתאימים, קרוב לסניף, בעלות נמוכה יותר.</p>
+  </div>
+</section>
+
+<!-- 9 · אפיק 1 · קמפיינים במטא -->
+<section class="slide" data-section="אפיק 1 · קמפיינים במטא" data-tag="אפיקי הפעילות">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>אפיק 1 מתוך 2 · ממומן</div>
+    <h2 class="rise d1">קמפיינים <span class="hl">במטא</span> · הבסיס</h2>
+    <p class="lead rise d2" style="margin-bottom:16px">המשך הפעילות הממומנת בפייסבוק ובאינסטגרם, עם שילוב של <b>מודעות סטטיות וסרטונים</b>, לפי המשרות והסניפים שמגייסים בכל תקופה.</p>
+    <div class="split rise d3" style="grid-template-columns:1fr 1.1fr;gap:28px;align-items:center">
+      <ul class="clean">
+        <li><span class="mk">‹</span><span><b>סטטי:</b> ממשיכים עם הפורמט שעבד ב-2026: פנים מהצוות, מסר ישיר למועמד, ופירוט ברור של התפקיד.</span></li>
+        <li><span class="mk">‹</span><span><b>וידאו:</b> סרטונים חדשים בכל רבעון, מיום צילום ייעודי, מחליפים ומרעננים את הקריאייטיב בקמפיינים.</span></li>
+        <li><span class="mk">‹</span><span><b>המטרה:</b> לשמור על קצב הלידים ולהוריד עוד את העלות לליד, בהתבסס על מה שהוכח בשטח.</span></li>
+      </ul>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <img class="img shadow tall" src="img/ad-2.jpg" alt="דרוש/ה מחסנאי/ת עם ראש גדול" style="object-position:50% 0">
+        <img class="img shadow tall" src="img/ad-3.jpg" alt="מאחורי כל ארגון מצליח עומד בק-אופיס מושלם" style="object-position:50% 0">
+        <img class="img shadow tall" src="img/ad-5.jpg" alt="נהג/ת עם רישיון ג'?" style="object-position:50% 0">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · אפיק 1 · יום צילום רבעוני -->
+<section class="slide" data-section="אפיק 1 · יום צילום רבעוני" data-tag="אפיקי הפעילות">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>אפיק 1 · מכפיל הכוח</div>
+    <h2 class="rise d1" style="margin-bottom:12px">יום צילום רבעוני = <span class="hl">8 סרטונים</span> לקמפיינים</h2>
+    <p class="lead rise d1" style="margin-bottom:26px">אנו מציעים לקיים יום צילום רבעוני, בו נצלם 8 סרטונים שיזינו את הקמפיינים שלנו ויגבירו את קצב גיוס הלידים <b>בעלויות נמוכות</b>.</p>
+    <div class="flow rise d2" style="margin-bottom:26px">
+      <div class="step"><div class="t">יום צילום</div><div class="s">אחד בכל רבעון, בסניפים</div></div>
+      <span class="arr">←</span>
+      <div class="step" style="border-color:rgba(0,153,216,.5)"><div class="t" style="color:var(--green)">8 סרטונים</div><div class="s">פורמטים קצרים לרילז ולפיד</div></div>
+      <span class="arr">←</span>
+      <div class="step"><div class="t">קמפיינים</div><div class="s">קריאייטיב חדש כל רבעון</div></div>
+      <span class="arr">←</span>
+      <div class="step" style="border-color:rgba(204,220,64,.45)"><div class="t" style="color:var(--blue)">לידים</div><div class="s">יותר, בעלות נמוכה יותר</div></div>
+    </div>
+    <p class="statement rise d3">4 ימי צילום בשנה = <span class="hl">32 סרטונים</span> חדשים, בהתבסס על הפורמט שהוריד את העלות לליד ל-1.20 ₪.</p>
+  </div>
+</section>
+
+<!-- 11 · אפיק 1 · דוגמאות לתכנים -->
+<section class="slide" data-section="אפיק 1 · דוגמאות לתכנים מצולמים" data-tag="אפיקי הפעילות">
+  <div class="inner">
+    <div class="eyebrow rise"><span class="tick"></span>אפיק 1 · יום צילום · דוגמאות לתכנים</div>
+    <h2 class="rise d1" style="margin-bottom:14px">ארבעה פורמטים <span class="hl">מצולמים</span></h2>
+    <div class="tablewrap rise d2" style="margin-bottom:16px">
+    <table class="table">
+      <tbody>
+        <tr><th style="width:28%">הפורמט</th><th>מה רואים</th><th style="width:30%">המטרה</th></tr>
+        <tr><td class="b">״לפני שאתה שולח קורות חיים – תכיר את המנהל שלך״</td><td>מנהל סניף מדבר ישירות למצלמה: מי הוא, איזה עובד הוא מחפש, איך הוא מקבל עובד חדש ומה חשוב לו בצוות. בטון אישי, עם רגעים מהעבודה.</td><td>לתת למשרה פנים ולהפחית חשש מהצעד הראשון.</td></tr>
+        <tr><td class="b">״משמרת שלמה ב-30 שניות״</td><td>עוקבים אחרי עובד מהכניסה לסניף: מפגש עם הצוות, הכנת הזמנות, שירות ללקוחות והפסקה. כתוביות מסבירות את המשימות ואת שעות העבודה.</td><td>לאפשר למועמד לדמיין את עצמו בתפקיד.</td></tr>
+        <tr><td class="b">״בוא נדבר על מה שמעניין אותך באמת״</td><td>שאלות קופצות על המסך ועובד או מנהל עונים בקצרה: מה השעות? עובדים בשישי? חייבים ניסיון? מה השכר? איך נראית ההכשרה? כל סרטון למשרה ולסניף מסוימים, עם פרטים מאושרים.</td><td>להביא פניות עם ציפיות מתאימות.</td></tr>
+        <tr><td class="b">״התחלתי כאן בתור...״</td><td>עובד שהתקדם בחברה חוזר לעמדה הראשונה שלו, מספר איך התחיל ומראה מה הוא עושה היום. משלבים תמונה ישנה, אם יש.</td><td>להמחיש אפשרות להתפתחות דרך סיפור אמיתי.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="cardrow four rise d3" style="grid-template-columns:repeat(4,1fr);gap:10px">
+      <img class="img ep" src="img/reel-4.jpg" alt="רילס: תכירו את המנהל שלכם">
+      <img class="img ep" src="img/reel-2.jpg" alt="רילס: משמרת שלמה ב-30 שניות">
+      <img class="img ep" src="img/reel-3.jpg" alt="רילס: מדברים על מה שמעניין אתכם באמת">
+      <img class="img ep" src="img/reel-1.jpg" alt="רילס: התחלתי כאן בתור...">
+    </div>
+  </div>
+</section>
+
+<!-- 12 · אפיק 2 · קהילות -->
+<section class="slide" data-section="אפיק 2 · גיוס מקומי בקהילות" data-tag="אפיקי הפעילות">
+  <div class="inner">
+    <div class="eyebrow blue rise"><span class="tick"></span>אפיק 2 מתוך 2 · אורגני</div>
+    <h2 class="rise d1">גיוס מקומי דרך <span class="hlb">קהילות בפייסבוק</span></h2>
+    <p class="lead rise d2" style="margin-bottom:20px">הרחבת החשיפה למשרות חשמל ישיר באמצעות הפצה ממוקדת בקבוצות דרושים, קבוצות יישוביות ולוחות קהילתיים בפייסבוק, <b>באזורי הסניפים המגייסים</b>.</p>
+    <div class="cardrow rise d3" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+      <div class="card"><span class="pill b">שלב 1</span><h3 style="margin:12px 0 8px">מיפוי קהילות רלוונטיות</h3><p>לכל סניף: איתור הקבוצות המתאימות, תיאום הפרסום לפי כללי הקבוצה ובמידת הצורך מול מנהליה.</p></div>
+      <div class="card"><span class="pill b">שלב 2</span><h3 style="margin:12px 0 8px">תוכן מותאם לקהל המקומי</h3><p>הצגת התפקיד, היתרונות והצוות בסניף, תוך הדגשת האפשרות <b>לעבוד קרוב לבית</b>.</p></div>
+      <div class="card" style="border-color:rgba(204,220,64,.35)"><span class="pill b">שלב 3</span><h3 style="margin:12px 0 8px">הגשת מועמדות פשוטה ומדידה</h3><p>קישור ייעודי לכל קבוצת פרסום, שמאפשר לזהות אילו קהילות מביאות פניות ומועמדים מתאימים.</p></div>
+    </div>
+    <p class="statement rise d4"><span class="hlb">המטרה:</span> להגיע למועמדים בסביבת הסניף, ולעודד גם שיתוף והמלצות בין חברי הקהילה.</p>
+  </div>
+</section>
+
+<!-- 13 · תודה -->
+<section class="slide" data-section="תודה">
+  <div class="inner" style="text-align:center">
+    <h1 class="rise" style="margin-bottom:18px">תודה <span style="color:var(--green)">שהקשבתם</span></h1>
+    <p class="lead rise d1" style="margin:0 auto 54px">נשמח לגייס יחד בהילוך גבוה ב-2027.</p>
+  </div>
+</section>
+
+</div>
+
+<div class="bottombar">
+  <div class="counter"><b id="cur">1</b> / <span id="total">13</span></div>
+  <div class="hint">ניווט: חצים במקלדת · רווח לשקף הבא</div>
+  <div class="navbtns">
+    <button class="navbtn" id="prevBtn" aria-label="שקף קודם">›</button>
+    <button class="navbtn" id="nextBtn" aria-label="שקף הבא">‹</button>
+  </div>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];const total=slides.length;
+document.getElementById('total').textContent=total;let cur=0,counted=new Set();
+function easeOut(t){return 1-Math.pow(1-t,3)}
+function runCounters(slide){slide.querySelectorAll('.count').forEach(el=>{if(counted.has(el))return;counted.add(el);
+ const to=parseFloat(el.dataset.to),dec=parseInt(el.dataset.dec||0),sep=el.dataset.sep;const dur=1400,t0=performance.now();
+ function frame(t){const p=Math.min(1,(t-t0)/dur),v=to*easeOut(p);let s=v.toFixed(dec);if(sep)s=Number(s).toLocaleString('en-US');el.textContent=s;if(p<1)requestAnimationFrame(frame)}
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches){let s=to.toFixed(dec);if(sep)s=Number(s).toLocaleString('en-US');el.textContent=s;return}
+ requestAnimationFrame(frame)})}
+function go(i){cur=Math.max(0,Math.min(total-1,i));slides.forEach((s,idx)=>s.classList.toggle('active',idx===cur));
+ document.getElementById('cur').textContent=cur+1;document.getElementById('progress').style.width=((cur+1)/total*100)+'%';
+ document.getElementById('sectionLabel').textContent=slides[cur].dataset.section||'';runCounters(slides[cur])}
+document.getElementById('nextBtn').onclick=()=>go(cur+1);document.getElementById('prevBtn').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{if(['ArrowLeft','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}else if(['ArrowRight','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}else if(e.key==='Home')go(0);else if(e.key==='End')go(total-1)});
+let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)go(cur+(dx>0?1:-1));tx=null},{passive:true});
+go(0);
+</script>
+
+</body>
+</html>
